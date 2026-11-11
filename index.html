@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <title>Tempo — Music Player</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Library">
+      <a class="brand" href="#" aria-label="Tempo home"><span class="brand-mark" aria-hidden="true">♫</span><span>tempo</span></a>
+      <div class="side-label">YOUR SPACE</div>
+      <button class="nav-item active" id="libraryNav"><span class="nav-icon" aria-hidden="true">▤</span> Library <span class="nav-count" id="trackCount">0</span></button>
+      <button class="nav-item" id="queueNav"><span class="nav-icon" aria-hidden="true">☷</span> Up next</button>
+      <div class="playlist-heading"><span class="side-label">PLAYLISTS</span><button class="icon-button small" id="newPlaylistButton" aria-label="Create playlist" title="Create playlist">+</button></div>
+      <div class="playlist-list" id="playlistList"><p class="muted small-copy">Your playlists will appear here.</p></div>
+      <div class="sidebar-bottom"><span class="status-dot"></span><span>Playing from this device</span></div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="breadcrumbs"><span>YOUR LIBRARY</span><span class="crumb-divider">/</span><strong id="viewTitle">All tracks</strong></div>
+        <div class="top-actions"><label class="search-box"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Search your library" aria-label="Search your library"><kbd>/</kbd></label><button class="text-button shortcuts-button" id="shortcutsButton" aria-haspopup="dialog" aria-controls="shortcutsDialog">Keyboard shortcuts</button><button class="import-button" id="importButton"><span aria-hidden="true">＋</span> Add music</button><input id="fileInput" type="file" accept="audio/*" multiple hidden></div>
+      </header>
+
+      <section class="library-view" id="libraryView">
+        <div class="welcome-row"><div><p class="eyebrow">YOUR SOUND, YOUR SPACE</p><h1>Music, in your element.</h1><p class="intro">A little room for everything you love to listen to.</p></div><button class="text-button" id="browseButton">＋ Add tracks</button></div>
+        <div class="drop-zone" id="dropZone" tabindex="0" role="button" aria-label="Add audio files by browsing or dropping them here"><div class="drop-icon" aria-hidden="true">↥</div><div><strong>Bring your music in</strong><span>Drop audio files here, or <button class="inline-button" id="dropBrowseButton">browse files</button></span></div><span class="format-note">MP3 · WAV · M4A · FLAC · OGG</span></div>
+        <div class="section-heading"><div><p class="eyebrow">COLLECTION</p><h2 id="listHeading">All tracks <span id="visibleCount">0</span></h2></div><button class="sort-button" id="sortButton" title="Sort tracks">Recently added <span aria-hidden="true">⌄</span></button></div>
+        <div class="track-table-wrap"><table class="track-table"><thead><tr><th class="number-col">#</th><th>TITLE</th><th>ALBUM</th><th>ADDED</th><th class="duration-col"><span aria-label="Duration">◷</span></th><th class="action-col"></th></tr></thead><tbody id="trackRows"><tr class="empty-row"><td colspan="6"><div class="empty-state"><div class="empty-art" aria-hidden="true"><span>♫</span><i></i><i></i><i></i><i></i></div><strong>Your library is a blank canvas.</strong><span>Add a few tracks and they’ll find their place here.</span><button class="import-button" id="emptyImportButton">＋ Choose audio files</button></div></td></tr></tbody></table></div>
+      </section>
+
+      <section class="queue-view hidden" id="queueView"><p class="eyebrow">LISTENING SESSION</p><h1>Up next</h1><p class="intro">Your queue follows the order in your library.</p><div id="queueContent"></div></section>
+    </main>
+
+    <footer class="player-bar">
+      <div class="now-playing"><div class="mini-art" id="miniArt" aria-hidden="true"><span>♫</span></div><div class="now-copy"><strong id="nowTitle">Nothing playing</strong><span id="nowArtist">Choose a track to begin</span></div><button class="icon-button favorite-button" id="favoriteButton" aria-label="Favorite track" title="Favorite track" disabled>♡</button></div>
+      <div class="playback"><div class="transport"><button class="control-button" id="shuffleButton" title="Shuffle" aria-label="Shuffle">⤨</button><button class="control-button" id="previousButton" title="Previous track" aria-label="Previous track">|◀</button><button class="play-button" id="playButton" aria-label="Play" title="Play"><span id="playGlyph">▶</span></button><button class="control-button" id="nextButton" title="Next track" aria-label="Next track">▶|</button><button class="control-button" id="repeatButton" title="Repeat off" aria-label="Repeat off">↻</button></div><div class="timeline"><span id="currentTime">0:00</span><input id="seekBar" type="range" min="0" max="1000" value="0" aria-label="Track position"><span id="duration">0:00</span></div></div>
+      <div class="volume-area"><span class="volume-icon" aria-hidden="true">◖</span><input id="volumeBar" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Volume"><button class="icon-button more-button" id="clearButton" title="Clear library" aria-label="Clear library">···</button></div>
+      <audio id="audio" preload="metadata"></audio>
+    </footer>
+  </div>
+  <dialog class="shortcuts-dialog" id="shortcutsDialog" aria-labelledby="shortcutsTitle"><div class="dialog-heading"><div><p class="eyebrow">QUICK CONTROLS</p><h2 id="shortcutsTitle">Keyboard shortcuts</h2></div><button class="icon-button dialog-close" id="shortcutsClose" aria-label="Close keyboard shortcuts" title="Close">×</button></div><dl class="shortcut-list"><div><dt>Play or pause</dt><dd><kbd>Space</kbd></dd></div><div><dt>Previous track</dt><dd><kbd>Shift</kbd> + <kbd>←</kbd></dd></div><div><dt>Next track</dt><dd><kbd>Shift</kbd> + <kbd>→</kbd></dd></div><div><dt>Volume down / up</dt><dd><kbd>↓</kbd> / <kbd>↑</kbd></dd></div><div><dt>Search library</dt><dd><kbd>/</kbd></dd></div><div><dt>Show shortcuts</dt><dd><kbd>?</kbd></dd></div><div><dt>Close dialog</dt><dd><kbd>Esc</kbd></dd></div></dl></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
